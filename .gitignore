@@ -1,0 +1,50 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+node_modules
+.pnp
+.pnp.js
+*.log*
+.yalc
+yalc.lock
+.deps
+
+# Build / test artifacts
+coverage*
+build/
+artifacts/
+cache/
+dist/
+coverageEnv
+coverage.json
+.coveralls.yml
+.coverage_artifacts
+.coverage_contracts
+*output.log
+contractsInfo.json
+deployments/hardhat
+deployments/localhost
+typechain/
+swarm/
+ipfs/
+
+# misc
+.DS_Store
+
+# Configuration files
+*.env
+.env*
+.vscode
+
+# OS files
+.DS_Store
+
+# Solidity
+.node-xmlhttprequest-sync-*
+scTopics
+allFiredEvents
+in_complete_tests
+build/development
+local_*
+bindings.go
+types
