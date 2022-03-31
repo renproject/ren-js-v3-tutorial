@@ -24,5 +24,5 @@ export const ChainTx = ({
     disabled,
     onProgress,
 }: Props) => {
-    // Handle Chain Transaction here.
+    // Handle Chain Transaction here...
 };
