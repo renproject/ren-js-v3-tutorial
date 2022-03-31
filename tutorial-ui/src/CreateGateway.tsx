@@ -1,58 +1,49 @@
 import { Bitcoin, Ethereum } from "@renproject/chains";
 import RenJS, { Gateway } from "@renproject/ren";
 import { ethers } from "ethers";
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { AsyncButton } from "async-button";
 import { ChainTx } from "./ChainTx";
 
-// Define `ethereum` type provided by MetaMask and other web3 browser wallets.
-declare global {
-    interface Window {
-        ethereum: any;
+const connectWeb3Wallet = async (chain: Ethereum) => {
+    await (window as any).ethereum.request({ method: "eth_requestAccounts" });
+    const web3Provider = new ethers.providers.Web3Provider(
+        (window as any).ethereum
+    );
+    chain.withSigner(web3Provider.getSigner());
+    const { chainId } = await web3Provider.getNetwork();
+    if (chainId !== parseInt(chain.network.network.chainId)) {
+        throw new Error(
+            `Wrong network - please change to ${chain.network.network.chainName}`
+        );
     }
-}
+};
 
 interface Props {
+    renJS: RenJS;
     gateway: Gateway | undefined;
     onGateway: (gateway: Gateway) => void;
 }
 
-export const CreateGateway = ({ gateway, onGateway }: Props) => {
-    const [ethereum] = useState(
-        () =>
-            new Ethereum({
-                network: "testnet",
-                provider: new ethers.providers.JsonRpcProvider(
-                    Ethereum.configMap.testnet?.network.rpcUrls[0]
-                ),
-            })
-    );
-    const [bitcoin] = useState(() => new Bitcoin({ network: "testnet" }));
-    const [renJS] = useState(() =>
-        new RenJS("testnet").withChains(ethereum, bitcoin)
-    );
+export const CreateGateway = ({ renJS, gateway, onGateway }: Props) => {
+    // Gateway parameters.
+    const asset = "BTC";
+    const from: Bitcoin = renJS.chains.Bitcoin as Bitcoin;
+    const to: Ethereum = renJS.chains.Ethereum as Ethereum;
 
     const createGateway = useCallback(async () => {
-        // Connect to MetaMask.
-        await window.ethereum.request({ method: "eth_requestAccounts" });
-        const web3Provider = new ethers.providers.Web3Provider(window.ethereum);
-        ethereum.withSigner(web3Provider.getSigner());
-        const { chainId } = await web3Provider.getNetwork();
-        if (chainId !== parseInt(ethereum.network.network.chainId)) {
-            throw new Error(
-                `Wrong network - please change to ${ethereum.network.network.chainName}`
-            );
-        }
+        // Connect Web3 wallet.
+        await connectWeb3Wallet(to);
 
         // Create gateway.
         const gateway = await renJS.gateway({
             asset: "BTC",
-            from: bitcoin.GatewayAddress(),
-            to: ethereum.Account(),
+            from: from.GatewayAddress(),
+            to: to.Account(),
         });
 
         onGateway(gateway);
-    }, [bitcoin, ethereum, renJS, onGateway]);
+    }, [from, to, renJS, onGateway]);
 
     return gateway ? (
         <div>
@@ -67,9 +58,9 @@ export const CreateGateway = ({ gateway, onGateway }: Props) => {
     ) : (
         <div>
             {/* Show gateway parameters. */}
-            <p>Asset: BTC</p>
-            <p>From: Bitcoin</p>
-            <p>To: Ethereum</p>
+            <p>Asset: {asset}</p>
+            <p>From: {from.chain}</p>
+            <p>To: {to.chain}</p>
             {/* Button to create gateway. */}
             <AsyncButton onClick={createGateway}>Create</AsyncButton>
         </div>

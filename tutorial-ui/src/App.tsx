@@ -1,10 +1,25 @@
-import { Gateway, GatewayTransaction } from "@renproject/ren";
+import { Bitcoin, Ethereum } from "@renproject/chains";
+import RenJS, { Gateway, GatewayTransaction } from "@renproject/ren";
+import { ethers } from "ethers";
 import { useCallback, useState } from "react";
 import { CreateGateway } from "./CreateGateway";
 import { GatewayTx } from "./GatewayTx";
-import { ShowGateway } from "./ShowGateway";
 
 function App() {
+    const [ethereum] = useState(
+        () =>
+            new Ethereum({
+                network: "testnet",
+                provider: new ethers.providers.JsonRpcProvider(
+                    Ethereum.configMap.testnet?.network.rpcUrls[0]
+                ),
+            })
+    );
+    const [bitcoin] = useState(() => new Bitcoin({ network: "testnet" }));
+    const [renJS] = useState(() =>
+        new RenJS("testnet").withChains(ethereum, bitcoin)
+    );
+
     const [gatewayTxs, setGatewayTxs] = useState<GatewayTransaction[]>([]);
     const addGatewayTx = useCallback(
         (tx: GatewayTransaction) => {
@@ -25,7 +40,11 @@ function App() {
     return (
         <div className="App" style={{ padding: 10 }}>
             <h3>Gateway</h3>
-            <CreateGateway gateway={gateway} onGateway={onGateway} />
+            <CreateGateway
+                renJS={renJS}
+                gateway={gateway}
+                onGateway={onGateway}
+            />
 
             <h3>Gateway Transactions</h3>
             <div
