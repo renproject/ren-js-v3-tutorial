@@ -6,20 +6,23 @@ import { CreateGateway } from "./CreateGateway";
 import { GatewayTx } from "./GatewayTx";
 
 function App() {
+    // Initialize RenJS and chains.
+    const network = "testnet"; // or RenNetwork.Testnet
     const [ethereum] = useState(
         () =>
             new Ethereum({
-                network: "testnet",
+                network,
                 provider: new ethers.providers.JsonRpcProvider(
-                    Ethereum.configMap.testnet?.network.rpcUrls[0]
+                    Ethereum.configMap[network]?.network.rpcUrls[0]
                 ),
             })
     );
-    const [bitcoin] = useState(() => new Bitcoin({ network: "testnet" }));
+    const [bitcoin] = useState(() => new Bitcoin({ network }));
     const [renJS] = useState(() =>
-        new RenJS("testnet").withChains(ethereum, bitcoin)
+        new RenJS(network).withChains(ethereum, bitcoin)
     );
 
+    // Store gateway transactions.
     const [gatewayTxs, setGatewayTxs] = useState<GatewayTransaction[]>([]);
     const addGatewayTx = useCallback(
         (tx: GatewayTransaction) => {
@@ -28,6 +31,7 @@ function App() {
         [setGatewayTxs]
     );
 
+    // Create callback for a new gateway.
     const [gateway, setGateway] = useState<Gateway>();
     const onGateway = useCallback(
         (newGateway: Gateway) => {
@@ -38,7 +42,7 @@ function App() {
     );
 
     return (
-        <div className="App" style={{ padding: 10 }}>
+        <div className="App" style={{ padding: "0 10px" }}>
             <h3>Gateway</h3>
             <CreateGateway
                 renJS={renJS}
@@ -47,12 +51,7 @@ function App() {
             />
 
             <h3>Gateway Transactions</h3>
-            <div
-                style={{
-                    display: "flex",
-                    flexFlow: "column",
-                }}
-            >
+            <div>
                 {gatewayTxs.map((gatewayTx) => (
                     <div
                         key={gatewayTx.hash}
