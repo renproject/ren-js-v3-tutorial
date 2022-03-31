@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import { useCallback, useState } from "react";
 import { AsyncButton } from "async-button";
 
+// Define `ethereum` type provided by MetaMask and other web3 browser wallets.
 declare global {
     interface Window {
         ethereum: any;

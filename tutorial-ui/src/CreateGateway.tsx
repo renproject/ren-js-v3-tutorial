@@ -4,6 +4,7 @@ import { ethers } from "ethers";
 import { useCallback, useState } from "react";
 import { AsyncButton } from "async-button";
 
+// Define `ethereum` type provided by MetaMask and other web3 browser wallets.
 declare global {
     interface Window {
         ethereum: any;
@@ -53,9 +54,11 @@ export const CreateGateway = ({ onGateway }: Props) => {
 
     return (
         <div>
+            {/* Show gateway parameters. */}
             <p>Asset: BTC</p>
             <p>From: Bitcoin</p>
             <p>To: Ethereum</p>
+            {/* Button to create gateway. */}
             <AsyncButton onClick={createGateway}>Create</AsyncButton>
         </div>
     );
