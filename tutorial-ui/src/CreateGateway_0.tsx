@@ -3,6 +3,7 @@ import RenJS, { Gateway } from "@renproject/ren";
 import { ethers } from "ethers";
 import { useCallback, useState } from "react";
 import { AsyncButton } from "async-button";
+import { ChainTx } from "./ChainTx";
 
 // Define `ethereum` type provided by MetaMask and other web3 browser wallets.
 declare global {
@@ -12,21 +13,16 @@ declare global {
 }
 
 interface Props {
+    gateway: Gateway | undefined;
     onGateway: (gateway: Gateway) => void;
 }
 
-export const CreateGateway = ({ onGateway }: Props) => {
-    // Define createGateway here...
-    const createGateway = () => {};
+export const CreateGateway = ({ gateway, onGateway }: Props) => {
+    // Gateway creation code here...
 
-    return (
-        <div>
-            {/* Show gateway parameters. */}
-            <p>Asset: BTC</p>
-            <p>From: Bitcoin</p>
-            <p>To: Ethereum</p>
-            {/* Button to create gateway. */}
-            <AsyncButton onClick={createGateway}>Create</AsyncButton>
-        </div>
+    return gateway ? (
+        <div>{/* Show gateway... */}</div>
+    ) : (
+        <div>{/* Show create gateway button... */}</div>
     );
 };

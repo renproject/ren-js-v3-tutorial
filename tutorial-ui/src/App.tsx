@@ -25,11 +25,7 @@ function App() {
     return (
         <div className="App" style={{ padding: 10 }}>
             <h3>Gateway</h3>
-            {gateway ? (
-                <ShowGateway gateway={gateway} />
-            ) : (
-                <CreateGateway onGateway={onGateway} />
-            )}
+            <CreateGateway gateway={gateway} onGateway={onGateway} />
 
             <h3>Gateway Transactions</h3>
             <div

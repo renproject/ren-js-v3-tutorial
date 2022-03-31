@@ -3,6 +3,7 @@ import RenJS, { Gateway } from "@renproject/ren";
 import { ethers } from "ethers";
 import { useCallback, useState } from "react";
 import { AsyncButton } from "async-button";
+import { ChainTx } from "./ChainTx";
 
 // Define `ethereum` type provided by MetaMask and other web3 browser wallets.
 declare global {
@@ -12,10 +13,11 @@ declare global {
 }
 
 interface Props {
+    gateway: Gateway | undefined;
     onGateway: (gateway: Gateway) => void;
 }
 
-export const CreateGateway = ({ onGateway }: Props) => {
+export const CreateGateway = ({ gateway, onGateway }: Props) => {
     const [ethereum] = useState(
         () =>
             new Ethereum({
@@ -52,7 +54,17 @@ export const CreateGateway = ({ onGateway }: Props) => {
         onGateway(gateway);
     }, [bitcoin, ethereum, renJS, onGateway]);
 
-    return (
+    return gateway ? (
+        <div>
+            {gateway.gatewayAddress ? (
+                <p>
+                    Deposit {gateway.params.asset} to {gateway.gatewayAddress}.
+                </p>
+            ) : null}
+
+            {gateway.in ? <ChainTx chainTx={gateway.in} /> : null}
+        </div>
+    ) : (
         <div>
             {/* Show gateway parameters. */}
             <p>Asset: BTC</p>
