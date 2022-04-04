@@ -1,20 +1,19 @@
 import { Bitcoin, Ethereum } from "@renproject/chains";
 import RenJS, { Gateway, GatewayTransaction } from "@renproject/ren";
-import { ethers } from "ethers";
+import { RenNetwork } from "@renproject/utils";
 import { useCallback, useState } from "react";
 import { CreateGateway } from "./CreateGateway";
 import { GatewayTx } from "./GatewayTx";
 
 function App() {
     // Initialize RenJS and chains.
-    const network = "testnet"; // or RenNetwork.Testnet
+    const network = RenNetwork.Testnet;
     const [ethereum] = useState(
         () =>
             new Ethereum({
                 network,
-                provider: new ethers.providers.JsonRpcProvider(
-                    Ethereum.configMap[network]?.network.rpcUrls[0]
-                ),
+                // Use public provider URL
+                provider: Ethereum.configMap[network].config.rpcUrls[0],
             })
     );
     const [bitcoin] = useState(() => new Bitcoin({ network }));

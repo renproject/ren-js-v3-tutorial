@@ -1,8 +1,8 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./console.sol";
-import {IGatewayRegistry} from "./IGatewayRegistry.sol";
+import "hardhat/console.sol";
+import {IGatewayRegistry} from "@renproject/gateway-sol/src/GatewayRegistry/interfaces/IGatewayRegistry.sol";
 
 contract TutorialBridge {
     IGatewayRegistry public gatewayRegistry;
@@ -14,6 +14,7 @@ contract TutorialBridge {
 
     function deposit(
         // Parameters from users
+        string calldata symbol,
         string calldata message,
         // Parameters from RenVM
         uint256 amount,
@@ -21,7 +22,7 @@ contract TutorialBridge {
         bytes calldata signature
     ) external {
         bytes32 pHash = keccak256(abi.encode(message));
-        gatewayRegistry.getMintGatewayBySymbol("BTC").mint(
+        gatewayRegistry.getMintGatewayBySymbol(symbol).mint(
             pHash,
             amount,
             nHash,
@@ -32,11 +33,12 @@ contract TutorialBridge {
 
     function withdraw(
         // Parameters from users
+        string calldata symbol,
         string calldata message,
         string calldata to,
         uint256 amount
     ) external {
-        gatewayRegistry.getMintGatewayBySymbol("BTC").burn(to, amount);
+        gatewayRegistry.getMintGatewayBySymbol(symbol).burn(to, amount);
         console.log("Withdraw message: ", message);
     }
 }

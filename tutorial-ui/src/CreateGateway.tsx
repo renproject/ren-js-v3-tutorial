@@ -4,6 +4,10 @@ import { ethers } from "ethers";
 import { useCallback } from "react";
 import { AsyncButton } from "async-button";
 import { ChainTx } from "./ChainTx";
+import { EVMParam } from "@renproject/chains-ethereum/build/main/utils/payloads/evmPayloadHandlers";
+
+// REPLACE WITH YOUR CONTRACT ADDRESS FROM PART 1:
+const contractAddress = "0x280fF67BACa8d121B7Ee9c52871FBF1D82EE8aD9";
 
 const connectWeb3Wallet = async (chain: Ethereum) => {
     await (window as any).ethereum.request({ method: "eth_requestAccounts" });
@@ -12,9 +16,9 @@ const connectWeb3Wallet = async (chain: Ethereum) => {
     );
     chain.withSigner(web3Provider.getSigner());
     const { chainId } = await web3Provider.getNetwork();
-    if (chainId !== parseInt(chain.network.network.chainId)) {
+    if (chainId !== parseInt(chain.network.config.chainId)) {
         throw new Error(
-            `Wrong network - please change to ${chain.network.network.chainName}`
+            `Wrong network - please change to ${chain.network.config.chainName}`
         );
     }
 };
@@ -26,24 +30,94 @@ interface Props {
 }
 
 export const CreateGateway = ({ renJS, gateway, onGateway }: Props) => {
-    // Gateway parameters.
-    const asset = "BTC";
-    const from: Bitcoin = renJS.chains.Bitcoin as Bitcoin;
-    const to: Ethereum = renJS.chains.Ethereum as Ethereum;
+    const createDepositGateway = useCallback(async () => {
+        // Gateway parameters.
+        const asset = "BTC";
+        const from = renJS.getChain<Bitcoin>("Bitcoin");
+        const to = renJS.getChain<Ethereum>("Ethereum");
 
-    const createGateway = useCallback(async () => {
         // Connect Web3 wallet.
         await connectWeb3Wallet(to);
 
         // Create gateway.
         const gateway = await renJS.gateway({
-            asset: "BTC",
+            asset: asset,
             from: from.GatewayAddress(),
-            to: to.Account(),
+            to: to.Contract({
+                to: contractAddress,
+                method: "deposit",
+                withRenParams: true,
+                params: [
+                    {
+                        name: "symbol",
+                        type: "string",
+                        value: asset,
+                    },
+                    {
+                        name: "message",
+                        type: "string",
+                        value: "Hello world.",
+                    },
+                ],
+            }),
         });
 
         onGateway(gateway);
-    }, [from, to, renJS, onGateway]);
+    }, [renJS, onGateway]);
+
+    const createWithdrawGateway = useCallback(async () => {
+        // Gateway parameters.
+        const asset = "BTC";
+        const from = renJS.getChain<Ethereum>("Ethereum");
+        const to = renJS.getChain<Bitcoin>("Bitcoin");
+
+        const recipient = await prompt(`Enter ${to.chain} address:`);
+        if (!recipient) {
+            throw new Error(`Must provide a recipient.`);
+        }
+
+        // Connect Web3 wallet.
+        await connectWeb3Wallet(from);
+
+        const contractBalance = await from.getBalance(asset, contractAddress);
+
+        // Create gateway.
+        const gateway = await renJS.gateway({
+            asset: asset,
+            from: from.Contract({
+                to: contractAddress,
+                method: "withdraw",
+                withRenParams: false,
+                params: [
+                    {
+                        name: "symbol",
+                        type: "string",
+                        value: asset,
+                    },
+                    {
+                        name: "message",
+                        type: "string",
+                        value: "Hello world.",
+                    },
+                    {
+                        name: "to",
+                        type: "string",
+                        // Fetch address from `to` field instead of
+                        // re-specifying `recipient`.
+                        value: EVMParam.EVM_TO_ADDRESS,
+                    },
+                    {
+                        name: "amount",
+                        type: "uint256",
+                        value: contractBalance.toFixed(),
+                    },
+                ],
+            }),
+            to: to.Address(recipient),
+        });
+
+        onGateway(gateway);
+    }, [renJS, onGateway]);
 
     return gateway ? (
         <div>
@@ -57,12 +131,8 @@ export const CreateGateway = ({ renJS, gateway, onGateway }: Props) => {
         </div>
     ) : (
         <div>
-            {/* Show gateway parameters. */}
-            <p>Asset: {asset}</p>
-            <p>From: {from.chain}</p>
-            <p>To: {to.chain}</p>
-            {/* Button to create gateway. */}
-            <AsyncButton onClick={createGateway}>Create</AsyncButton>
+            <AsyncButton onClick={createDepositGateway}>Deposit</AsyncButton>{" "}
+            <AsyncButton onClick={createWithdrawGateway}>Withdraw</AsyncButton>
         </div>
     );
 };

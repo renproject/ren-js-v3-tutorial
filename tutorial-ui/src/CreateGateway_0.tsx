@@ -5,6 +5,9 @@ import { useCallback, useState } from "react";
 import { AsyncButton } from "async-button";
 import { ChainTx } from "./ChainTx";
 
+// REPLACE WITH YOUR CONTRACT ADDRESS FROM PART 1:
+const contractAddress = "0x280fF67BACa8d121B7Ee9c52871FBF1D82EE8aD9";
+
 interface Props {
     renJS: RenJS;
     gateway: Gateway | undefined;
@@ -17,6 +20,6 @@ export const CreateGateway = ({ renJS, gateway, onGateway }: Props) => {
     return gateway ? (
         <div>{/* Show gateway... */}</div>
     ) : (
-        <div>{/* Show create gateway button... */}</div>
+        <div>{/* Show deposit and withdraw buttons... */}</div>
     );
 };

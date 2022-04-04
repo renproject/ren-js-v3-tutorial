@@ -14,6 +14,7 @@ contract TutorialBridge {
 
     function deposit(
         // Parameters from users
+        string calldata symbol,
         string calldata message,
         // Parameters from RenJS
         uint256 amount,
@@ -23,6 +24,7 @@ contract TutorialBridge {
 
     function withdraw(
         // Parameters from users
+        string calldata symbol,
         string calldata message,
         string calldata to,
         uint256 amount
