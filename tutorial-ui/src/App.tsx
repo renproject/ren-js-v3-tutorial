@@ -1,7 +1,9 @@
+import { useCallback, useState } from "react";
+
 import { Bitcoin, Ethereum } from "@renproject/chains";
 import RenJS, { Gateway, GatewayTransaction } from "@renproject/ren";
 import { RenNetwork } from "@renproject/utils";
-import { useCallback, useState } from "react";
+
 import { CreateGateway } from "./CreateGateway";
 import { GatewayTx } from "./GatewayTx";
 

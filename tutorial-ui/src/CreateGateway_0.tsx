@@ -1,12 +1,14 @@
-import { Bitcoin, Ethereum } from "@renproject/chains";
-import RenJS, { Gateway } from "@renproject/ren";
+import { AsyncButton } from "async-button";
 import { ethers } from "ethers";
 import { useCallback, useState } from "react";
-import { AsyncButton } from "async-button";
+
+import { Bitcoin, Ethereum } from "@renproject/chains";
+import RenJS, { Gateway } from "@renproject/ren";
+
 import { ChainTx } from "./ChainTx";
 
 // REPLACE WITH YOUR CONTRACT ADDRESS FROM PART 1:
-const contractAddress = "0x280fF67BACa8d121B7Ee9c52871FBF1D82EE8aD9";
+const contractAddress = "0x18ebE494aB4eA0331740ef394d61eA83f8b9e272";
 
 interface Props {
     renJS: RenJS;

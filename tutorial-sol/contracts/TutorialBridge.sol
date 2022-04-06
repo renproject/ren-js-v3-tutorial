@@ -21,7 +21,7 @@ contract TutorialBridge {
         bytes32 nHash,
         bytes calldata signature
     ) external {
-        bytes32 pHash = keccak256(abi.encode(message));
+        bytes32 pHash = keccak256(abi.encode(symbol, message));
         gatewayRegistry.getMintGatewayBySymbol(symbol).mint(
             pHash,
             amount,
@@ -38,7 +38,7 @@ contract TutorialBridge {
         string calldata to,
         uint256 amount
     ) external {
-        gatewayRegistry.getMintGatewayBySymbol(symbol).burn(to, amount);
+        gatewayRegistry.getMintGatewayBySymbol(symbol).burn(bytes(to), amount);
         console.log("Withdraw message: ", message);
     }
 }

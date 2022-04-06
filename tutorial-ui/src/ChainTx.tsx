@@ -1,11 +1,12 @@
-import {
-    TxWaiter,
-    TxSubmitter,
-    ChainTransactionStatus,
-    ChainTransactionProgress,
-} from "@renproject/utils";
-import { useEffect, useState } from "react";
 import { AsyncButton } from "async-button";
+import { useEffect, useState } from "react";
+
+import {
+    ChainTransactionProgress,
+    ChainTransactionStatus,
+    TxSubmitter,
+    TxWaiter,
+} from "@renproject/utils";
 
 interface Props {
     // The chain transaction

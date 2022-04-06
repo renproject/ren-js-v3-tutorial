@@ -1,6 +1,8 @@
+import { useState } from "react";
+
 import { GatewayTransaction } from "@renproject/ren";
 import { ChainTransactionStatus } from "@renproject/utils";
-import { useState } from "react";
+
 import { ChainTx } from "./ChainTx";
 
 interface Props {
