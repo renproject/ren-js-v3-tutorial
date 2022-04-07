@@ -9,7 +9,7 @@ import RenJS, { Gateway } from "@renproject/ren";
 import { ChainTx } from "./ChainTx";
 
 // REPLACE WITH YOUR CONTRACT ADDRESS FROM PART 1:
-const contractAddress = "0x18ebE494aB4eA0331740ef394d61eA83f8b9e272";
+const contractAddress = "0xcfbD9476BbcEAdebFd6964f4D447853309480DF2";
 
 const connectWeb3Wallet = async (chain: Ethereum) => {
     await (window as any).ethereum.request({ method: "eth_requestAccounts" });
