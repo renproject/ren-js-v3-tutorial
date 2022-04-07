@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/ren-js-v3-tutorial/static/css/main.e6c13ad2.css",
+    "main.js": "/ren-js-v3-tutorial/static/js/main.6a32f9a7.js",
+    "index.html": "/ren-js-v3-tutorial/index.html",
+    "main.e6c13ad2.css.map": "/ren-js-v3-tutorial/static/css/main.e6c13ad2.css.map",
+    "main.6a32f9a7.js.map": "/ren-js-v3-tutorial/static/js/main.6a32f9a7.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.6a32f9a7.js"
+  ]
+}
