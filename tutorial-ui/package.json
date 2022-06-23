@@ -5,9 +5,9 @@
     "homepage": "https://renproject.github.io/ren-js-v3-tutorial",
     "dependencies": {
         "@craco/craco": "^6.4.3",
-        "@renproject/chains": "^3.0.0-alpha.23",
-        "@renproject/ren": "^3.0.0-alpha.23",
-        "@renproject/utils": "^3.0.0-alpha.22",
+        "@renproject/chains": "^3.2.0",
+        "@renproject/ren": "^3.2.0",
+        "@renproject/utils": "^3.2.0",
         "@testing-library/jest-dom": "^5.16.3",
         "@testing-library/react": "^12.1.4",
         "@testing-library/user-event": "^14.0.0",

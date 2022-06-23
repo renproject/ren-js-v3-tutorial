@@ -79,7 +79,7 @@ export const ChainTx = ({
             {/* done */}
             {progress.status === ChainTransactionStatus.Done ? (
                 <span>
-                    {progress.transaction?.txidFormatted.slice(0, 20)}...
+                    {progress.transaction?.txHash.slice(0, 20)}...
                 </span>
             ) : null}
 

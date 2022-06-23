@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { useCallback } from "react";
 
 import { Bitcoin, Ethereum } from "@renproject/chains";
-import { EVMParam } from "@renproject/chains-ethereum/build/main/utils/payloads/evmPayloadHandlers";
+import { EVMParam } from "@renproject/chains-ethereum/build/main/utils/payloads/evmParams";
 import RenJS, { Gateway } from "@renproject/ren";
 
 import { ChainTx } from "./ChainTx";
