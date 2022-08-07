@@ -15,7 +15,7 @@ function App() {
             new Ethereum({
                 network,
                 // Use public provider URL
-                provider: Ethereum.configMap[network].config.rpcUrls[0],
+                provider: Ethereum.configMap[network]!.config.rpcUrls[0],
             })
     );
     const [bitcoin] = useState(() => new Bitcoin({ network }));
