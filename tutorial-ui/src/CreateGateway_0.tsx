@@ -8,7 +8,7 @@ import RenJS, { Gateway } from "@renproject/ren";
 import { ChainTx } from "./ChainTx";
 
 // REPLACE WITH YOUR CONTRACT ADDRESS FROM PART 1:
-const contractAddress = "0x18ebE494aB4eA0331740ef394d61eA83f8b9e272";
+const contractAddress = "0x2e8084cd0d6a3d7923504c3d68E849Ba7f032C6b";
 
 interface Props {
     renJS: RenJS;
