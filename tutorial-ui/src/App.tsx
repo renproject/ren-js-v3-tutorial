@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-import { Bitcoin, Ethereum } from "@renproject/chains";
+import { Bitcoin, Goerli } from "@renproject/chains";
 import RenJS, { Gateway, GatewayTransaction } from "@renproject/ren";
 import { RenNetwork } from "@renproject/utils";
 
@@ -12,10 +12,10 @@ function App() {
     const network = RenNetwork.Testnet;
     const [ethereum] = useState(
         () =>
-            new Ethereum({
+            new Goerli({ // Use Ethereum on mainnet
                 network,
                 // Use public provider URL
-                provider: Ethereum.configMap[network]!.config.rpcUrls[0],
+                provider: Goerli.configMap[network]!.config.rpcUrls[0],
             })
     );
     const [bitcoin] = useState(() => new Bitcoin({ network }));

@@ -9,7 +9,7 @@ import RenJS, { Gateway } from "@renproject/ren";
 import { ChainTx } from "./ChainTx";
 
 // REPLACE WITH YOUR CONTRACT ADDRESS FROM PART 1:
-const contractAddress = "0xcfbD9476BbcEAdebFd6964f4D447853309480DF2";
+const contractAddress = "0x2e8084cd0d6a3d7923504c3d68E849Ba7f032C6b";
 
 const connectWeb3Wallet = async (chain: Ethereum) => {
     await (window as any).ethereum.request({ method: "eth_requestAccounts" });
@@ -36,7 +36,7 @@ export const CreateGateway = ({ renJS, gateway, onGateway }: Props) => {
         // Gateway parameters.
         const asset = "BTC";
         const from = renJS.getChain<Bitcoin>("Bitcoin");
-        const to = renJS.getChain<Ethereum>("Ethereum");
+        const to = renJS.getChain<Ethereum>("Goerli"); // Set to "Ethereum" on mainnet
 
         // Connect Web3 wallet.
         await connectWeb3Wallet(to);
